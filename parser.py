@@ -10,6 +10,7 @@ TYPE_LIST = [
              ]
 
 def headerToDict(headerList):
+
   dict = {}
   preKey = ""
   for key in TYPE_LIST:
@@ -22,8 +23,8 @@ def headerToDict(headerList):
       continue
 
     tempList = header.split(": ")
-    dict[tempList[0]] = tempList[1]
-    if dict[tempList[0]] == " ":
+    dict[tempList[0]] = ": ".join(tempList[1:])
+    if dict[tempList[0]].replace(" ", "") == "":
       dict[tempList[0]] = "NULL"
 
     preKey = tempList[0]
@@ -40,6 +41,12 @@ def getHeader(filePath):
       headerList.append(line)
   return headerList
 
+def dictTocsv(dictList):
+  keys = dataList[0].keys()
+  with open(CSV_PATH, 'w') as output_file:
+      dict_writer = csv.DictWriter(output_file, keys)
+      dict_writer.writeheader()
+      dict_writer.writerows(dataList)
 
 if __name__ == "__main__":
   
@@ -48,3 +55,5 @@ if __name__ == "__main__":
   for filename in os.listdir(DATA_PATH):
     full_filename = os.path.join(DATA_PATH, filename)
     dataList.append(headerToDict(getHeader(full_filename)))
+
+  dictTocsv(dataList)
