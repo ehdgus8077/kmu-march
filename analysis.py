@@ -99,7 +99,7 @@ def quiz_3(mysql):
     else:
       Dict[key] = [result]
 
-
+  timeDict = {} 
   for subject in Dict:
     Dict[subject].sort(key = lambda element : element[-2])
     for t in range(len(Dict[subject])):
@@ -112,11 +112,13 @@ def quiz_3(mysql):
           result2 = mysql.selectQuery(f'SELECT MessageID FROM emailTo WHERE MessageID = "{Dict[subject][f][0]}" AND addressTo = "{Dict[subject][t][2]}" ')
           if len(result1) == 0 or len(result2) == 0:
             continue
-          print(Dict[subject][f])
-          print(Dict[subject][t])
-          print(Dict[subject][f][-1] - Dict[subject][t][-1])
-          print(f"{Dict[subject][f][-1]} - {Dict[subject][t][-1]}")
-          print("_____________________-")
+
+          if Dict[subject][f][-1] <= Dict[subject][t][-1]:
+            continue
+          
+          timeDict[Dict[subject][f][0]] =  Dict[subject][f][-1] - Dict[subject][t][-1]
+  for info in sorted(timeDict.items(), key=lambda kv: kv[1])[:5]:
+    print(f"{info[0]} - {info[1]}")
 
 if __name__ == "__main__":
   mysql = MysqlMgr()
