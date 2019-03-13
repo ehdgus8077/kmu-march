@@ -166,7 +166,7 @@ class MysqlMgr:
 
 if __name__ == "__main__":
   mysqlMgr = MysqlMgr()
-  # mysqlMgr.createDB()
+  mysqlMgr.createDB()
   mysqlMgr.deleteTable()
   mysqlMgr.createTable()
   
